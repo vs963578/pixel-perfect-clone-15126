@@ -1,6 +1,7 @@
 import { Outlet, createRootRoute, HeadContent, Scripts, Link } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
 import { CartProvider } from "@/lib/cart";
+import { AuthProvider } from "@/lib/auth";
 import { Navbar, PromoBanner } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Toaster } from "sonner";
@@ -75,14 +76,16 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   return (
-    <CartProvider>
-      <PromoBanner />
-      <Navbar />
-      <main className="min-h-[calc(100vh-104px)]">
-        <Outlet />
-      </main>
-      <Footer />
-      <Toaster position="bottom-right" richColors={false} />
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <PromoBanner />
+        <Navbar />
+        <main className="min-h-[calc(100vh-104px)]">
+          <Outlet />
+        </main>
+        <Footer />
+        <Toaster position="bottom-right" richColors={false} />
+      </CartProvider>
+    </AuthProvider>
   );
 }

@@ -1,6 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useCart } from "@/lib/cart";
-import { ShoppingBag } from "lucide-react";
+import { useAuth } from "@/lib/auth";
+import { ShoppingBag, Shield } from "lucide-react";
 
 export function PromoBanner() {
   return (
@@ -20,6 +21,7 @@ const links = [
 export function Navbar() {
   const { count } = useCart();
   const { location } = useRouterState();
+  const { isAdmin } = useAuth();
 
   return (
     <nav className="sticky top-0 z-40 bg-background/90 backdrop-blur-md border-b border-border">
@@ -50,6 +52,14 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2.5">
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-[10px] border border-border text-sm font-medium text-ink2 hover:border-ink hover:text-ink transition-colors"
+            >
+              <Shield className="h-3.5 w-3.5" /> Admin
+            </Link>
+          )}
           <Link
             to="/cart"
             className="flex items-center gap-2 px-4 py-2 rounded-[10px] bg-ink text-white text-sm font-medium hover:opacity-85 transition-opacity"
