@@ -1,8 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { Check } from "lucide-react";
+import { toast } from "sonner";
 import { useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/products";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
@@ -51,14 +53,58 @@ function CheckoutPage() {
     );
   }
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    const orderId = `MRKT-${Math.floor(1000 + Math.random() * 9000)}`;
-    setTimeout(() => {
-      clear();
-      navigate({ to: "/success", search: { order: orderId } });
-    }, 600);
+    const form = new FormData(e.currentTarget as HTMLFormElement);
+    const customer_name = `${form.get("first")} ${form.get("last")}`.trim();
+    const customer_email = String(form.get("email") ?? "");
+    const shipping_address = String(form.get("addr") ?? "");
+    const shipping_city = String(form.get("city") ?? "");
+    const shipping_zip = String(form.get("pin") ?? "");
+
+    const { data: userData } = await supabase.auth.getUser();
+
+    const { data: order, error } = await supabase
+      .from("orders")
+      .insert({
+        user_id: userData.user?.id ?? null,
+        customer_email,
+        customer_name,
+        shipping_address,
+        shipping_city,
+        shipping_zip,
+        subtotal,
+        tax,
+        total,
+      })
+      .select()
+      .single();
+
+    if (error || !order) {
+      setSubmitting(false);
+      toast.error(error?.message ?? "Could not place order");
+      return;
+    }
+
+    const items = detailed.map((d) => ({
+      order_id: order.id,
+      product_id: d.product.id,
+      product_name: d.product.name,
+      product_emoji: d.product.emoji,
+      unit_price: d.product.price,
+      quantity: d.qty,
+      line_total: d.lineTotal,
+    }));
+    const { error: itemsError } = await supabase.from("order_items").insert(items);
+    if (itemsError) {
+      setSubmitting(false);
+      toast.error(itemsError.message);
+      return;
+    }
+
+    clear();
+    navigate({ to: "/success", search: { order: order.order_number } });
   };
 
   return (
