@@ -1,7 +1,8 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 import { useCart } from "@/lib/cart";
 import { useAuth } from "@/lib/auth";
-import { ShoppingBag, Shield } from "lucide-react";
+import { ShoppingBag, Shield, Search } from "lucide-react";
 
 export function PromoBanner() {
   return (
@@ -16,21 +17,39 @@ export function PromoBanner() {
 const links = [
   { to: "/", label: "Home" },
   { to: "/products", label: "Products" },
+  { to: "/contact", label: "Contact" },
 ] as const;
 
 export function Navbar() {
   const { count } = useCart();
   const { location } = useRouterState();
   const { isAdmin } = useAuth();
+  const navigate = useNavigate();
+  const initialQ =
+    (location.search as { q?: string } | undefined)?.q ?? "";
+  const [q, setQ] = useState(initialQ);
+
+  useEffect(() => {
+    setQ(initialQ);
+  }, [initialQ]);
+
+  function onSearch(e: React.FormEvent) {
+    e.preventDefault();
+    const query = q.trim();
+    navigate({
+      to: "/products",
+      search: query ? { q: query } : {},
+    });
+  }
 
   return (
     <nav className="sticky top-0 z-40 bg-background/90 backdrop-blur-md border-b border-border">
-      <div className="flex items-center justify-between px-6 md:px-12 h-16">
-        <Link to="/" className="font-display text-[22px] font-bold tracking-tight">
+      <div className="flex items-center gap-4 px-6 md:px-12 h-16">
+        <Link to="/" className="font-display text-[22px] font-bold tracking-tight shrink-0">
           MR<span className="text-accent">K</span>T
         </Link>
 
-        <div className="hidden md:flex gap-1">
+        <div className="hidden md:flex gap-1 shrink-0">
           {links.map((l) => {
             const active =
               l.to === "/" ? location.pathname === "/" : location.pathname.startsWith(l.to);
@@ -51,7 +70,21 @@ export function Navbar() {
           })}
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <form onSubmit={onSearch} className="flex-1 max-w-md mx-auto hidden sm:block">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-ink3 pointer-events-none" />
+            <input
+              type="search"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="Search products…"
+              aria-label="Search products"
+              className="w-full pl-9 pr-3 py-2 rounded-full border border-border bg-bg2 text-sm focus:outline-none focus:border-ink focus:bg-card transition-colors"
+            />
+          </div>
+        </form>
+
+        <div className="flex items-center gap-2.5 shrink-0 ml-auto sm:ml-0">
           {isAdmin && (
             <Link
               to="/admin"
@@ -72,6 +105,21 @@ export function Navbar() {
           </Link>
         </div>
       </div>
+
+      {/* Mobile search */}
+      <form onSubmit={onSearch} className="sm:hidden px-6 pb-3">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-ink3 pointer-events-none" />
+          <input
+            type="search"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search products…"
+            aria-label="Search products"
+            className="w-full pl-9 pr-3 py-2 rounded-full border border-border bg-bg2 text-sm focus:outline-none focus:border-ink focus:bg-card transition-colors"
+          />
+        </div>
+      </form>
     </nav>
   );
 }
