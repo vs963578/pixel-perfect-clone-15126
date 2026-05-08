@@ -8,6 +8,7 @@ const searchSchema = z.object({
     .enum(["All", "Electronics", "Fashion", "Home", "Books", "Sports"])
     .catch("All")
     .default("All"),
+  q: z.string().optional().catch(undefined),
 });
 
 export const Route = createFileRoute("/products/")({
@@ -31,8 +32,17 @@ const FILTERS = [
 ] as const;
 
 function ProductsPage() {
-  const { cat } = Route.useSearch();
-  const filtered = cat === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.cat === cat);
+  const { cat, q } = Route.useSearch();
+  const query = (q ?? "").trim().toLowerCase();
+  const byCat = cat === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.cat === cat);
+  const filtered = query
+    ? byCat.filter(
+        (p) =>
+          p.name.toLowerCase().includes(query) ||
+          p.desc.toLowerCase().includes(query) ||
+          p.cat.toLowerCase().includes(query),
+      )
+    : byCat;
 
   return (
     <>
@@ -40,7 +50,9 @@ function ProductsPage() {
         <h1 className="font-display text-4xl md:text-5xl font-bold tracking-[-0.03em] mb-2">
           All Products
         </h1>
-        <p className="text-ink2 mb-7">Discover our full collection</p>
+        <p className="text-ink2 mb-7">
+          {query ? `Results for "${q}"` : "Discover our full collection"}
+        </p>
         <div className="flex gap-2 flex-wrap mb-2">
           {FILTERS.map((f) => {
             const active = cat === f.key;
