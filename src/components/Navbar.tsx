@@ -2,7 +2,8 @@ import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { useCart } from "@/lib/cart";
 import { useAuth } from "@/lib/auth";
-import { ShoppingBag, Shield, Search } from "lucide-react";
+import { ShoppingBag, Shield, Search, User as UserIcon, LogOut } from "lucide-react";
+import { toast } from "sonner";
 
 export function PromoBanner() {
   return (
@@ -23,7 +24,7 @@ const links = [
 export function Navbar() {
   const { count } = useCart();
   const { location } = useRouterState();
-  const { isAdmin } = useAuth();
+  const { isAdmin, user, signOut } = useAuth();
   const navigate = useNavigate();
   const initialQ =
     (location.search as { q?: string } | undefined)?.q ?? "";
@@ -91,6 +92,27 @@ export function Navbar() {
               className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-[10px] border border-border text-sm font-medium text-ink2 hover:border-ink hover:text-ink transition-colors"
             >
               <Shield className="h-3.5 w-3.5" /> Admin
+            </Link>
+          )}
+          {user ? (
+            <button
+              onClick={async () => {
+                await signOut();
+                toast.success("Signed out");
+                navigate({ to: "/" });
+              }}
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-[10px] border border-border text-sm font-medium text-ink2 hover:border-ink hover:text-ink transition-colors"
+              aria-label="Sign out"
+            >
+              <LogOut className="h-3.5 w-3.5" /> Sign out
+            </button>
+          ) : (
+            <Link
+              to="/auth"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-[10px] border border-border text-sm font-medium text-ink2 hover:border-ink hover:text-ink transition-colors"
+            >
+              <UserIcon className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Sign in</span>
             </Link>
           )}
           <Link
