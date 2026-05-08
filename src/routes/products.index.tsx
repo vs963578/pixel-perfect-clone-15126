@@ -8,6 +8,7 @@ const searchSchema = z.object({
     .enum(["All", "Electronics", "Fashion", "Home", "Books", "Sports"])
     .catch("All")
     .default("All"),
+  q: z.string().optional().catch(undefined),
 });
 
 export const Route = createFileRoute("/products/")({
