@@ -29,25 +29,28 @@ export const Route = createFileRoute("/products/$productId")({
       </Link>
     </div>
   ),
-  errorComponent: ({ error, reset }) => {
-    const router = useRouter();
-    return (
-      <div className="px-12 py-20 text-center">
-        <p className="text-destructive mb-4">{error.message}</p>
-        <button
-          className="px-4 py-2 bg-ink text-white rounded-md"
-          onClick={() => {
-            router.invalidate();
-            reset();
-          }}
-        >
-          Retry
-        </button>
-      </div>
-    );
-  },
+  errorComponent: ProductErrorComponent,
   component: ProductDetail,
 });
+
+function ProductErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+  const router = useRouter();
+
+  return (
+    <div className="px-12 py-20 text-center">
+      <p className="text-destructive mb-4">{error.message}</p>
+      <button
+        className="px-4 py-2 bg-ink text-white rounded-md"
+        onClick={() => {
+          router.invalidate();
+          reset();
+        }}
+      >
+        Retry
+      </button>
+    </div>
+  );
+}
 
 function ProductDetail() {
   const { product } = Route.useLoaderData();
@@ -65,8 +68,17 @@ function ProductDetail() {
       </Link>
 
       <div className="max-w-[1100px] mx-auto px-6 md:px-12 py-10 grid md:grid-cols-2 gap-10 md:gap-16 items-start">
-        <div className="aspect-square bg-bg2 rounded-2xl flex items-center justify-center text-[120px] border-[1.5px] border-border">
-          {product.emoji}
+        <div className="relative overflow-hidden rounded-[32px] border-[1.5px] border-border bg-bg2 shadow-soft">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="aspect-square w-full object-cover"
+          />
+          {product.badge && (
+            <span className="absolute left-5 top-5 rounded-full bg-white/92 px-3 py-1 text-[10px] font-mono-store uppercase tracking-[0.16em] text-ink shadow-sm">
+              {product.badge}
+            </span>
+          )}
         </div>
         <div>
           <div className="text-xs font-mono-store text-ink3 uppercase tracking-[0.1em] mb-2">

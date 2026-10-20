@@ -1,8 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap");
+
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
-
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap");
 
 @custom-variant dark (&:is(.dark *));
 
@@ -56,13 +56,13 @@
   --font-mono-family: "DM Mono", monospace;
 
   /* MRKT palette */
-  --background: oklch(0.985 0.005 85);     /* #faf9f6 */
-  --foreground: oklch(0.22 0.012 60);       /* #1a1814 */
-  --bg2: oklch(0.957 0.008 85);             /* #f2f0eb */
-  --bg3: oklch(0.918 0.01 85);              /* #e8e5de */
+  --background: oklch(0.985 0.005 85); /* #faf9f6 */
+  --foreground: oklch(0.22 0.012 60); /* #1a1814 */
+  --bg2: oklch(0.957 0.008 85); /* #f2f0eb */
+  --bg3: oklch(0.918 0.01 85); /* #e8e5de */
   --ink: oklch(0.22 0.012 60);
-  --ink2: oklch(0.45 0.012 60);             /* #5a5650 */
-  --ink3: oklch(0.65 0.012 60);             /* #9a958e */
+  --ink2: oklch(0.45 0.012 60); /* #5a5650 */
+  --ink3: oklch(0.65 0.012 60); /* #9a958e */
 
   --card: oklch(1 0 0);
   --card-foreground: var(--foreground);
@@ -72,9 +72,9 @@
   --primary: var(--ink);
   --primary-foreground: oklch(1 0 0);
 
-  --accent: oklch(0.55 0.17 38);            /* #c8410a */
+  --accent: oklch(0.55 0.17 38); /* #c8410a */
   --accent-foreground: oklch(1 0 0);
-  --accent2: oklch(0.63 0.18 38);           /* #e85d2a */
+  --accent2: oklch(0.63 0.18 38); /* #e85d2a */
 
   --secondary: var(--bg2);
   --secondary-foreground: var(--ink);
@@ -83,9 +83,9 @@
 
   --destructive: oklch(0.55 0.17 38);
   --destructive-foreground: oklch(1 0 0);
-  --success: oklch(0.5 0.12 155);           /* #2d7a4f */
+  --success: oklch(0.5 0.12 155); /* #2d7a4f */
 
-  --border: oklch(0.88 0.01 85);            /* #dedad3 */
+  --border: oklch(0.88 0.01 85); /* #dedad3 */
   --input: var(--border);
   --ring: var(--ink);
 
@@ -100,20 +100,28 @@
   * {
     border-color: var(--color-border);
   }
-  html, body {
+  html,
+  body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-size: 15px;
     line-height: 1.6;
   }
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     letter-spacing: -0.01em;
   }
 }
 
 @layer utilities {
-  .font-display { font-family: var(--font-display); }
-  .font-mono-store { font-family: var(--font-mono); }
+  .font-display {
+    font-family: var(--font-display);
+  }
+  .font-mono-store {
+    font-family: var(--font-mono);
+  }
 }
