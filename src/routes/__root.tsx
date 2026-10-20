@@ -47,11 +47,21 @@ export const Route = createRootRoute({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "MRKT — Curated General Store" },
-      { name: "description", content: "Pixel Perfect Replica creates exact visual duplicates of web page screenshots." },
-      { property: "og:description", content: "Pixel Perfect Replica creates exact visual duplicates of web page screenshots." },
-      { name: "twitter:description", content: "Pixel Perfect Replica creates exact visual duplicates of web page screenshots." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/60e97ae8-f607-458c-8a25-1136b0315775/id-preview-4fa4dc1a--f3de5685-d929-4ab8-a899-8a50422a4709.lovable.app-1777615682372.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/60e97ae8-f607-458c-8a25-1136b0315775/id-preview-4fa4dc1a--f3de5685-d929-4ab8-a899-8a50422a4709.lovable.app-1777615682372.png" },
+      {
+        name: "twitter:description",
+        content:
+          "Shop electronics, fashion, home goods, books and sports in one polished storefront.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=elevated%20lifestyle%20still%20life%20of%20modern%20everyday%20essentials%20including%20headphones%20candle%20tote%20bag%20and%20ceramic%20decor%20on%20warm%20neutral%20stone%20surface%2C%20luxury%20editorial%20retail%20photography%2C%20soft%20natural%20sunlight%2C%20premium%20website%20hero%20image&image_size=landscape_16_9",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=elevated%20lifestyle%20still%20life%20of%20modern%20everyday%20essentials%20including%20headphones%20candle%20tote%20bag%20and%20ceramic%20decor%20on%20warm%20neutral%20stone%20surface%2C%20luxury%20editorial%20retail%20photography%2C%20soft%20natural%20sunlight%2C%20premium%20website%20hero%20image&image_size=landscape_16_9",
+      },
     ],
     links: [{ rel: "stylesheet", href: appCss }],
   }),
